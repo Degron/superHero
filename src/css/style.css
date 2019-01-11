@@ -1,3 +1,7 @@
+html {
+  background-color: black;
+}
+
 h1,
 h2,
 h3,
@@ -9,5 +13,5 @@ p {
 }
 
 .tile:hover ~ .tile {
-  transform: translate3d(50px, 0, 0);
+  transform: translate3d(60px, 0, 0);
 }

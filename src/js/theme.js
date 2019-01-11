@@ -106,13 +106,7 @@ const colors = {
   greens,
   reds,
   oranges,
-  purples,
-  ...flatten("blue", blues),
-  ...flatten("gray", grays),
-  ...flatten("green", greens),
-  ...flatten("red", reds),
-  ...flatten("orange", oranges),
-  ...flatten("purple", purples)
+  purples
 };
 
 export { colors };

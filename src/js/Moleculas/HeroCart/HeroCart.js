@@ -12,7 +12,7 @@ export default class HeroCart extends Component {
       <StyledBox bg="darkGray" color="white" p={["15px", "22px"]}>
         <Flex mb={["39px", "58px"]}>
           <Box width={1 / 2} mr={["8px", "16px"]}>
-            <Image src={this.props.src} />
+            <StyledImage src={this.props.image.url} />
           </Box>
           <Box width={1 / 2}>
             <Text
@@ -27,37 +27,37 @@ export default class HeroCart extends Component {
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              intelligence: {this.props.intelligence}
+              intelligence: {this.props.powerstats.intelligence}
             </Text>
             <Text
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              strength: {this.props.strength}
+              strength: {this.props.powerstats.strength}
             </Text>
             <Text
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              speed: {this.props.speed}
+              speed: {this.props.powerstats.speed}
             </Text>
             <Text
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              durability: {this.props.durability}
+              durability: {this.props.powerstats.durability}
             </Text>
             <Text
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              power: {this.props.power}
+              power: {this.props.powerstats.power}
             </Text>
             <Text
               fontSize={["14px", "14px", "14px", "14px", "20px"]}
               color="white"
             >
-              combat: {this.props.combat}
+              combat: {this.props.powerstats.combat}
             </Text>
           </Box>
         </Flex>
@@ -71,13 +71,20 @@ const StyledBox = styled(Box)`
   border: 2px solid #424242;
 `;
 
+const StyledImage = styled(Image)`
+  max-height: 400px;
+  object-fit: cover;
+`;
+
 HeroCart.propTypes = {
-  src: PropTypes.string,
+  image: PropTypes.shape({ url: PropTypes.string }),
   name: PropTypes.string,
-  intelligence: PropTypes.string,
-  strength: PropTypes.string,
-  speed: PropTypes.string,
-  durability: PropTypes.string,
-  power: PropTypes.string,
-  combat: PropTypes.string
+  powerstats: PropTypes.shape({
+    intelligence: PropTypes.string,
+    strength: PropTypes.string,
+    speed: PropTypes.string,
+    durability: PropTypes.string,
+    power: PropTypes.string,
+    combat: PropTypes.string
+  })
 };

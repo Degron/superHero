@@ -4,8 +4,9 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import config from "../../webpack.dev.config.js";
-import https from 'https';
+import https from "https";
 import axios from "axios";
+import async from "async";
 
 const app = express(),
   DIST_DIR = __dirname,
@@ -22,31 +23,39 @@ app.use(webpackHotMiddleware(compiler));
 
 app.use(express.static(`${__dirname}`));
 
-// app.get("*", (req, res, next) => {
-//   compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.set("content-type", "text/html");
-//     res.send(result);
-//     res.end();
-//   });
-// });
+app.get("/getHeroes/:start/:count", (req, res, next) => {
+  const { start, count } = req.params;
+  if (+count > 10) {
+    res.status(501).send({ error: "Too many you want!!!" });
+  }
 
-app.get("/test", (req, res, next) => {
+  const queue = [];
   const agent = new https.Agent({
     rejectUnauthorized: false
   });
+  for (let i = start; i < +start + +count; i++) {
+    const fn = cb => {
+      return axios
+        .get(`https://superheroapi.com/api/2089251891142345/${i}`, {
+          httpsAgent: agent
+        })
+        .then(response => {
+          cb(null, response.data);
+        })
+        .catch(error => {
+          cb(error, null);
+        });
+    };
+    queue.push(fn);
+  }
 
-  axios.get("https://superheroapi.com/api/2089251891142345/02", {
-      httpsAgent: agent
-    })
-    .then(function(response) {
-      console.log("RESPONSE FROM API", response);
-    })
-    .catch(function(error) {
-      console.log("REQUEST ERROR", error);
-    });
+  async.parallel(queue, (error, result) => {
+    if (error) {
+      res.status(500).send(error);
+    }
+    res.set("content-type", "application/json");
+    res.send(result);
+  });
 });
 
 const PORT = process.env.PORT || 8080;

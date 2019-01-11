@@ -1,2 +1,2 @@
-import FaceCard from './FaceCard';
-export default FaceCard;
+import Carousel from './Carousel';
+export default Carousel;
